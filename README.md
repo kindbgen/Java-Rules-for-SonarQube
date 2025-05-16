@@ -12,7 +12,7 @@
 
 ## Purpose
 
-As we all know, SonarQube is a great tool that helps us increase quality of our codebase. However, it does apply mainly to general Java issues. As we know, we can hurt ourselves much more doing Java. [Adobe Experience Manager](https://experienceleague.adobe.com/en/docs) is a comprehensive content management platform solution for building websites, mobile apps and forms. This tool is intended to find common bugs and bad smells specific for Java development. Documentation of each rule is available from SonarQube interface after plugin installation.
+As we all know, SonarQube is a great tool that helps us increase quality of our codebase. However, it does apply mainly to general Java issues. As we know, we can hurt ourselves much more doing Java. This tool is intended to find common bugs and bad smells specific for Java development. Documentation of each rule is available from SonarQube interface after plugin installation.
 
 ## Prerequisites
 
