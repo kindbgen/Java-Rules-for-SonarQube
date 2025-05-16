@@ -1,0 +1,15 @@
+{
+  "title": "\"BigDecimal.divide()\" must specify precision and rounding mode",
+  "type": "BUG",
+  "status": "ready",
+  "tags": ["reliability", "pitfall"],
+  "defaultSeverity": "CRITICAL",
+  "sqKey": "S2112",
+  "scope": "Main",
+  "remediation": {
+    "func": "Constant/Issue",
+    "constantCost": "5min"
+  },
+  "softwareQualities": ["RELIABILITY"],
+  "cleanCodeAttribute": "INTENTIONAL"
+}
