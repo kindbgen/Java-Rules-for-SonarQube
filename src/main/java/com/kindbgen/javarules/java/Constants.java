@@ -16,11 +16,8 @@ package com.kindbgen.javarules.java;
 
 public final class Constants {
 
-    public static final String REPOSITORY_KEY = "Sonar (Java)";
-    public static final String REPOSITORY_NAME = "Sonar (Java)";
-
-    public static final String SLING_RESOURCE_QUALIFIED_NAME = "org.apache.sling.api.resource.Resource";
-
+    public static final String REPOSITORY_KEY = "java";
+    public static final String REPOSITORY_NAME = "Sonar";
     private Constants() {
         // private constructor to hide public one
     }

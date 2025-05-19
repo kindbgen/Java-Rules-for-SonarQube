@@ -4,7 +4,7 @@
   "status": "ready",
   "tags": ["reliability", "pitfall"],
   "defaultSeverity": "CRITICAL",
-  "sqKey": "S2112",
+  "sqKey": "S9000",
   "scope": "Main",
   "remediation": {
     "func": "Constant/Issue",
