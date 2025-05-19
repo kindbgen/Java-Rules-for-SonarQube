@@ -31,7 +31,7 @@ import java.util.List;
 @Rule(key = BigDecimalDividePrecisionRequiredCheck.RULE_KEY)
 public class BigDecimalDividePrecisionRequiredCheck extends BaseTreeVisitor implements JavaFileScanner {
 
-    public static final String RULE_KEY = "S8888";
+    public static final String RULE_KEY = "S9000";
     public static final String RULE_MESSAGE = "\"BigDecimal.divide()\" must specify precision and rounding mode";
     private static final String BIG_DECIMAL_FQN = "java.math.BigDecimal";
     private static final String METHOD_NAME = "divide";
@@ -60,11 +60,17 @@ public class BigDecimalDividePrecisionRequiredCheck extends BaseTreeVisitor impl
         // 检查参数数量：必须 >= 2（精度+舍入模式）
         if (args.size() < 2) {
             context.reportIssue(this, tree, "必须指定精度和舍入模式");
+        } else if (args.size() == 2) {
+            // 验证第二个参数是否为MathContext
+            ExpressionTree scaleArg = args.get(1);
+            if (!scaleArg.symbolType().is("java.math.MathContext")) {
+                context.reportIssue(this, scaleArg, "divide方法第二个参数必须是MathContext");
+            }
         } else {
             // 验证第二个参数是否为整数（精度）
             ExpressionTree scaleArg = args.get(1);
             if (!scaleArg.symbolType().is("int")) {
-                context.reportIssue(this, scaleArg, "精度参数必须是整数");
+                context.reportIssue(this, scaleArg, "divide方法精度参数必须是整数");
             }
         }
     }

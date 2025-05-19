@@ -16,41 +16,15 @@ package com.kindbgen.javarules.java.checks;
 
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-
 class BigDecimalDividePrecisionRequiredCheckTest extends AbstractBaseTest {
 
     @Test
-    void badDivide() {
-//        this.check = new BigDecimalDividePrecisionRequiredCheck();
-//        this.filename = "src/test/files/java/AnnotationsConstantsCheck.java";
+    void testBigDecimalDividePrecisionRequired() {
+        this.check = new BigDecimalDividePrecisionRequiredCheck();
+        this.filename = "src/test/files/java/BigDecimalDividePrecisionRequiredCheck.java";
 //        verify(false);
-
-        BigDecimal a = BigDecimal.valueOf(1);
-        BigDecimal b = BigDecimal.valueOf(3);
-
-        // 未指定精度（触发规则）
-//        BigDecimal error1 = a.divide(b);
-
-        // 仅指定舍入模式（参数不足）
-        BigDecimal error2 = a.divide(b, BigDecimal.ROUND_DOWN);
-    }
-
-    @Test
-    void goodDivide() {
-        BigDecimal a = BigDecimal.valueOf(1);
-        BigDecimal b = BigDecimal.valueOf(3);
-
-        // 新版 RoundingMode
-        BigDecimal success1 = a.divide(b, 2, RoundingMode.DOWN);
-
-        // 旧版常量
-        BigDecimal success2 = a.divide(b, 2, BigDecimal.ROUND_DOWN);
-
-        // 使用 MathContext（兼容另一种重载）
-        BigDecimal success3 = a.divide(b, new MathContext(2));
+        verify(true);
+//        verify();
     }
 
 }
