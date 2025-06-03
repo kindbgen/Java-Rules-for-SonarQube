@@ -1,0 +1,35 @@
+name: Spotless Auto Format
+
+on:
+  push:
+    branches: [ "**" ]  # 所有分支的推送事件
+  pull_request:
+    branches: [ master, develop ]  # 监控的目标分支
+
+concurrency:
+  group: backend-${{ github.event.pull_request.number || github.ref }}
+
+jobs:
+  spotless-format:
+    if: github.repository != 'kindbgen/Java-Rules-for-SonarQube' && vars.SPOTLESS_FORMAT == 'true'
+    name: Format Code
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 授予代码写入权限
+      pull-requests: write  # 允许更新PR
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.TOKEN }}
+      - name: Run spotless apply
+        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
+      - name: Check for modified files
+        id: git-check
+        run: |
+          echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: steps.git-check.outputs.modified == 'true'
+        with:
+          commit_message: Spotless Apply
