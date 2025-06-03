@@ -21,6 +21,7 @@ import org.sonar.api.Plugin;
 public class JavaRulesSonarPlugin implements Plugin {
     @Override
     public void define(Context context) {
-        context.addExtensions(JavaRulesDefinition.class, JavaCheckRegistrar.class);
+        context.addExtensions(JavaRulesDefinition.class,
+                JavaCheckRegistrar.class);
     }
 }
