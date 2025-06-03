@@ -11,20 +11,24 @@ concurrency:
 
 jobs:
   spotless-format:
-    if: github.repository != 'kindbgen/Java-Rules-for-SonarQube' && vars.SPOTLESS_FORMAT == 'true'
-    name: Format Code
+#    if: github.repository != 'kindbgen/Java-Rules-for-SonarQube' && vars.SPOTLESS_FORMAT == 'true'
+    # 对于push事件，如果最新提交包含[skip ci]则跳过；PR事件总是运行
+    if: ${{ github.event_name != 'push' || !contains(github.event.commits[0].message, '[skip ci]') }}
+    name: Run Spotless and apply fixes
     runs-on: ubuntu-latest
     permissions:
       contents: write  # 授予代码写入权限
       pull-requests: write  # 允许更新PR
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN }}
       - name: Run spotless apply
-        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
+#        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
+        run : mvn -B spotless:apply
       - name: Check for modified files
         id: git-check
         run: |
