@@ -26,9 +26,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN }}
-            # 步骤4: 应用Spotless格式化
-             - name: Apply Spotless formatting
-             run: mvn -B spotless:apply
+      # 步骤4: 应用Spotless格式化
       - name: Run spotless apply
 #        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
         run : mvn -B spotless:apply
