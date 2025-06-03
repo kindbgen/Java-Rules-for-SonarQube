@@ -67,7 +67,7 @@ jobs:
 
       # 步骤4: 提交格式化后的变更
       - name: Commit changes
-        if: steps.check-changes.outputs.modified == 'true'
+        if: steps.git-check.outputs.modified == 'true'
         run: |
           git config user.name "Kindbgen"
           git config user.email "kindbgen@gmail.com"
