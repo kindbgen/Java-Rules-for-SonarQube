@@ -14,6 +14,12 @@
  */
 package com.kindbgen.javarules.matcher;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.java.model.JParser;
 import org.sonar.java.model.JParserConfig;
@@ -24,13 +30,6 @@ import org.sonar.plugins.java.api.tree.ExpressionStatementTree;
 import org.sonar.plugins.java.api.tree.MethodInvocationTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.StatementTree;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MethodMatcherTest {
 
@@ -65,8 +64,7 @@ public class MethodMatcherTest {
                 MethodNamePredicate.is(UNIT_NAME),
                 OwnerTypePredicate.is("com.kindbgen.test.TestClass"),
                 ParameterTypePredicate.is("com.kindbgen.test.MyClass1"),
-                ParameterTypePredicate.is("com.kindbgen.test.MyClass2")
-        );
+                ParameterTypePredicate.is("com.kindbgen.test.MyClass2"));
 
         assertThat(methodMatcher.matches(methodInvocationTree), is(true));
     }
@@ -79,8 +77,7 @@ public class MethodMatcherTest {
                 MethodNamePredicate.is(UNIT_NAME),
                 OwnerTypePredicate.is("com.kindbgen.test.TestClass"),
                 ParameterTypePredicate.anyParameterType(),
-                ParameterTypePredicate.is("com.kindbgen.test.MyClass2")
-        );
+                ParameterTypePredicate.is("com.kindbgen.test.MyClass2"));
 
         assertThat(methodMatcher.matches(methodInvocationTree), is(true));
     }
@@ -93,8 +90,7 @@ public class MethodMatcherTest {
                 MethodNamePredicate.is("different"),
                 OwnerTypePredicate.is("com.kindbgen.test.TestClass"),
                 ParameterTypePredicate.is("com.kindbgen.test.MyClass1"),
-                ParameterTypePredicate.is("com.kindbgen.test.MyClass2")
-        );
+                ParameterTypePredicate.is("com.kindbgen.test.MyClass2"));
 
         assertThat(methodMatcher.matches(methodInvocationTree), is(false));
     }
@@ -106,8 +102,7 @@ public class MethodMatcherTest {
         MethodMatcher methodMatcher = MethodMatcher.create(
                 MethodNamePredicate.is(UNIT_NAME),
                 OwnerTypePredicate.is("com.kindbgen.test.TestClass"),
-                ParameterTypePredicate.is("com.kindbgen.test.MyClass1")
-        );
+                ParameterTypePredicate.is("com.kindbgen.test.MyClass1"));
 
         assertThat(methodMatcher.matches(methodInvocationTree), is(false));
     }
@@ -120,8 +115,7 @@ public class MethodMatcherTest {
                 MethodNamePredicate.is(UNIT_NAME),
                 OwnerTypePredicate.is("com.kindbgen.test.Different"),
                 ParameterTypePredicate.is("com.kindbgen.test.MyClass1"),
-                ParameterTypePredicate.is("com.kindbgen.test.MyClass2")
-        );
+                ParameterTypePredicate.is("com.kindbgen.test.MyClass2"));
 
         assertThat(methodMatcher.matches(methodInvocationTree), is(false));
     }
@@ -134,8 +128,7 @@ public class MethodMatcherTest {
                 MethodNamePredicate.is(UNIT_NAME),
                 OwnerTypePredicate.is("com.kindbgen.test.TestClass"),
                 ParameterTypePredicate.is("com.kindbgen.test.Different1"),
-                ParameterTypePredicate.is("com.kindbgen.test.MyClass2")
-        );
+                ParameterTypePredicate.is("com.kindbgen.test.MyClass2"));
 
         assertThat(methodMatcher.matches(methodInvocationTree), is(false));
     }
@@ -143,13 +136,21 @@ public class MethodMatcherTest {
     private void givenMethodInvocationTree(String codeToParse) {
         CompilationUnitTree compilationUnitTree = parse(codeToParse);
         ClassTree classTree = (ClassTree) compilationUnitTree.types().get(CLASS_INDEX);
-        StatementTree statementTree = ((MethodTree) classTree.members().get(CLASS_METHOD_INDEX)).block().body().get(METHOD_INVOCATION_INDEX);
+        StatementTree statementTree = ((MethodTree) classTree.members().get(CLASS_METHOD_INDEX))
+                .block()
+                .body()
+                .get(METHOD_INVOCATION_INDEX);
         this.methodInvocationTree = (MethodInvocationTree) ((ExpressionStatementTree) statementTree).expression();
     }
 
     private CompilationUnitTree parse(String source) {
         List<File> classpath = Arrays.asList(new File(TEST_CLASSES_FILEPATH), new File(CLASSES_FILEPATH));
-        return JParser.parse(JParserConfig.Mode.FILE_BY_FILE.create(new JavaVersionImpl(11), classpath).astParser(), JAVA_VERSION, UNIT_NAME, source);
+        return JParser.parse(
+                JParserConfig.Mode.FILE_BY_FILE
+                        .create(new JavaVersionImpl(11), classpath)
+                        .astParser(),
+                JAVA_VERSION,
+                UNIT_NAME,
+                source);
     }
-
 }

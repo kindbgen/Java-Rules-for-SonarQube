@@ -14,11 +14,10 @@
  */
 package com.kindbgen.javarules.version;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 public class Version {
 
@@ -50,8 +49,7 @@ public class Version {
     }
 
     public boolean isEqualOrGreaterThan(Version version) {
-        return version.major < this.major
-                || (version.major == this.major && version.minor <= this.minor);
+        return version.major < this.major || (version.major == this.major && version.minor <= this.minor);
     }
 
     @Override
@@ -63,13 +61,11 @@ public class Version {
             return false;
         }
         Version version = (Version) o;
-        return major == version.major &&
-                minor == version.minor;
+        return major == version.major && minor == version.minor;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(major, minor);
     }
-
 }

@@ -14,9 +14,8 @@
  */
 package com.kindbgen.javarules.matcher;
 
-import org.sonar.plugins.java.api.semantic.Type;
-
 import java.util.function.Predicate;
+import org.sonar.plugins.java.api.semantic.Type;
 
 @FunctionalInterface
 public interface OwnerTypePredicate extends Predicate<Type> {
@@ -24,5 +23,4 @@ public interface OwnerTypePredicate extends Predicate<Type> {
     static OwnerTypePredicate is(String fullyQualifiedOwnerTypeName) {
         return type -> type.is(fullyQualifiedOwnerTypeName);
     }
-
 }

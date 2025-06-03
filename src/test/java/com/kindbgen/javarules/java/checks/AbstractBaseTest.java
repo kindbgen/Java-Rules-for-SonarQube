@@ -14,13 +14,12 @@
  */
 package com.kindbgen.javarules.java.checks;
 
-import org.apache.commons.lang3.StringUtils;
-import org.sonar.java.checks.verifier.CheckVerifier;
-import org.sonar.plugins.java.api.JavaFileScanner;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.sonar.java.checks.verifier.CheckVerifier;
+import org.sonar.plugins.java.api.JavaFileScanner;
 
 public abstract class AbstractBaseTest {
 
@@ -41,7 +40,8 @@ public abstract class AbstractBaseTest {
 
     static {
         CLASSPATH_JAR = new ArrayList<>();
-        String classPath = StringUtils.defaultIfBlank(System.getProperty(SUREFIRE_TEST_CLASS_PATH), System.getProperty(JAVA_CLASS_PATH));
+        String classPath = StringUtils.defaultIfBlank(
+                System.getProperty(SUREFIRE_TEST_CLASS_PATH), System.getProperty(JAVA_CLASS_PATH));
         if (StringUtils.isNotBlank(classPath)) {
             for (String jar : classPath.split(File.pathSeparator)) {
                 if (jar.endsWith(".jar")) {
@@ -67,17 +67,11 @@ public abstract class AbstractBaseTest {
                     .withClassPath(CLASSPATH_JAR)
                     .verifyIssues();
         } else {
-            CheckVerifier.newVerifier()
-                    .onFile(filename)
-                    .withCheck(check)
-                    .verifyIssues();
+            CheckVerifier.newVerifier().onFile(filename).withCheck(check).verifyIssues();
         }
     }
 
     protected void verifyNoIssues() {
-        CheckVerifier.newVerifier()
-                .onFile(filename)
-                .withCheck(check)
-                .verifyNoIssues();
+        CheckVerifier.newVerifier().onFile(filename).withCheck(check).verifyNoIssues();
     }
 }

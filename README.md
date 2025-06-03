@@ -1,4 +1,4 @@
-[<img src="assets/KINDBGEN-logo.png" width=50% height=50%>](http://www.kindbgen.com/poland)
+[<img src="assets/kindbgen-logo.png" width=50% height=50%>](http://www.kindbgen.com/poland)
 
 
 ![Builds Status](https://github.com/kindbgen/Java-Rules-for-SonarQube/actions/workflows/build.yml/badge.svg)

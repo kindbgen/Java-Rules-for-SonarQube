@@ -14,14 +14,13 @@
  */
 package com.kindbgen.javarules.java.checks;
 
+import java.util.List;
 import org.sonar.check.Rule;
 import org.sonar.plugins.java.api.JavaFileScanner;
 import org.sonar.plugins.java.api.JavaFileScannerContext;
 import org.sonar.plugins.java.api.tree.BaseTreeVisitor;
 import org.sonar.plugins.java.api.tree.ExpressionTree;
 import org.sonar.plugins.java.api.tree.MethodInvocationTree;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:kindbgen@gmail.com">Kindbgen<a/>

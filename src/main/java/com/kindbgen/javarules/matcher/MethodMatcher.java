@@ -14,15 +14,14 @@
  */
 package com.kindbgen.javarules.matcher;
 
+import java.util.Arrays;
+import java.util.List;
 import org.sonar.plugins.java.api.semantic.Symbol;
 import org.sonar.plugins.java.api.semantic.Symbol.MethodSymbol;
 import org.sonar.plugins.java.api.tree.IdentifierTree;
 import org.sonar.plugins.java.api.tree.MemberSelectExpressionTree;
 import org.sonar.plugins.java.api.tree.MethodInvocationTree;
 import org.sonar.plugins.java.api.tree.Tree;
-
-import java.util.Arrays;
-import java.util.List;
 
 public final class MethodMatcher {
 
@@ -32,16 +31,21 @@ public final class MethodMatcher {
 
     private final MethodParametersPredicate methodParametersPredicate;
 
-    private MethodMatcher(MethodNamePredicate methodNamePredicate, OwnerTypePredicate methodOwnerTypePredicate,
-                          List<ParameterTypePredicate> methodParameterTypePredicates) {
+    private MethodMatcher(
+            MethodNamePredicate methodNamePredicate,
+            OwnerTypePredicate methodOwnerTypePredicate,
+            List<ParameterTypePredicate> methodParameterTypePredicates) {
         this.methodNamePredicate = methodNamePredicate;
         this.methodOwnerTypePredicate = methodOwnerTypePredicate;
         this.methodParametersPredicate = MethodParametersPredicate.of(methodParameterTypePredicates);
     }
 
-    public static MethodMatcher create(MethodNamePredicate methodNamePredicate, OwnerTypePredicate methodOwnerTypePredicate,
-                                       ParameterTypePredicate... methodParameterTypePredicates) {
-        return new MethodMatcher(methodNamePredicate, methodOwnerTypePredicate, Arrays.asList(methodParameterTypePredicates));
+    public static MethodMatcher create(
+            MethodNamePredicate methodNamePredicate,
+            OwnerTypePredicate methodOwnerTypePredicate,
+            ParameterTypePredicate... methodParameterTypePredicates) {
+        return new MethodMatcher(
+                methodNamePredicate, methodOwnerTypePredicate, Arrays.asList(methodParameterTypePredicates));
     }
 
     private static IdentifierTree getIdentifier(MethodInvocationTree methodInvocationTree) {
@@ -62,7 +66,9 @@ public final class MethodMatcher {
     }
 
     private boolean isSearchedMethod(MethodSymbol symbol) {
-        return isMethodNameAcceptable(symbol) && allMethodParametersAcceptable(symbol) && methodOwnerTypePredicate.test(symbol.owner().type());
+        return isMethodNameAcceptable(symbol)
+                && allMethodParametersAcceptable(symbol)
+                && methodOwnerTypePredicate.test(symbol.owner().type());
     }
 
     private boolean isMethodNameAcceptable(MethodSymbol symbol) {
@@ -72,5 +78,4 @@ public final class MethodMatcher {
     private boolean allMethodParametersAcceptable(MethodSymbol methodSymbol) {
         return methodParametersPredicate.test(methodSymbol.parameterTypes());
     }
-
 }

@@ -15,16 +15,15 @@
 package com.kindbgen.javarules.java.rules;
 
 import com.kindbgen.javarules.java.checks.BigDecimalDividePrecisionRequiredCheck;
-import org.sonar.plugins.java.api.JavaCheck;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.sonar.plugins.java.api.JavaCheck;
 
 public class JavaRulesList {
 
     private JavaRulesList() {
-        //private constructor
+        // private constructor
     }
 
     public static List<Class<? extends JavaCheck>> getChecks() {
@@ -41,5 +40,4 @@ public class JavaRulesList {
     public static List<Class<? extends JavaCheck>> getJavaTestChecks() {
         return Collections.emptyList();
     }
-
 }

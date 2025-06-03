@@ -22,9 +22,8 @@ class BigDecimalDividePrecisionRequiredCheckTest extends AbstractBaseTest {
     void testBigDecimalDividePrecisionRequired() {
         this.check = new BigDecimalDividePrecisionRequiredCheck();
         this.filename = "src/test/files/java/BigDecimalDividePrecisionRequiredCheck.java";
-//        verify(false);
+        //        verify(false);
         verify(true);
-//        verify();
+        //        verify();
     }
-
 }

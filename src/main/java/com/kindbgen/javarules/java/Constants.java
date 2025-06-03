@@ -18,8 +18,8 @@ public final class Constants {
 
     public static final String REPOSITORY_KEY = "java";
     public static final String REPOSITORY_NAME = "Sonar (Java)";
+
     private Constants() {
         // private constructor to hide public one
     }
-
 }

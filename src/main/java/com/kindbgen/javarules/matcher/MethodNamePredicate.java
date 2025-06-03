@@ -22,5 +22,4 @@ public interface MethodNamePredicate extends Predicate<String> {
     static MethodNamePredicate is(String currentMethodName) {
         return methodName -> methodName.equals(currentMethodName);
     }
-
 }

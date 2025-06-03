@@ -14,22 +14,19 @@
  */
 package com.kindbgen.javarules.java.rules;
 
+import static com.kindbgen.javarules.java.Constants.REPOSITORY_KEY;
+
+import java.util.List;
+import java.util.stream.Collectors;
 import org.sonar.api.config.Configuration;
 import org.sonar.plugins.java.api.CheckRegistrar;
 import org.sonar.plugins.java.api.JavaCheck;
 import org.sonarsource.api.sonarlint.SonarLintSide;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.kindbgen.javarules.java.Constants.REPOSITORY_KEY;
-
 @SonarLintSide
 public class JavaCheckRegistrar implements CheckRegistrar {
 
-
-    public JavaCheckRegistrar(Configuration configuration) {
-    }
+    public JavaCheckRegistrar(Configuration configuration) {}
 
     @Override
     public void register(RegistrarContext registrarContext) {
@@ -37,13 +34,10 @@ public class JavaCheckRegistrar implements CheckRegistrar {
     }
 
     private List<Class<? extends JavaCheck>> checkClasses() {
-        return JavaRulesList.getJavaChecks().stream()
-                .collect(Collectors.toList());
+        return JavaRulesList.getJavaChecks().stream().collect(Collectors.toList());
     }
 
     private List<Class<? extends JavaCheck>> testCheckClasses() {
-        return JavaRulesList.getJavaTestChecks().stream()
-                .collect(Collectors.toList());
+        return JavaRulesList.getJavaTestChecks().stream().collect(Collectors.toList());
     }
-
 }

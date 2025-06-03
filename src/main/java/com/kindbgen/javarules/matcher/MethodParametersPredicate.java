@@ -14,10 +14,9 @@
  */
 package com.kindbgen.javarules.matcher;
 
-import org.sonar.plugins.java.api.semantic.Type;
-
 import java.util.List;
 import java.util.function.Predicate;
+import org.sonar.plugins.java.api.semantic.Type;
 
 @FunctionalInterface
 public interface MethodParametersPredicate extends Predicate<List<Type>> {
@@ -26,7 +25,8 @@ public interface MethodParametersPredicate extends Predicate<List<Type>> {
         return actualParameterTypes -> allParameterTypesMatch(actualParameterTypes, expectedParameterTypes);
     }
 
-    static boolean allParameterTypesMatch(List<Type> actualParameterTypes, List<ParameterTypePredicate> expectedParameterTypes) {
+    static boolean allParameterTypesMatch(
+            List<Type> actualParameterTypes, List<ParameterTypePredicate> expectedParameterTypes) {
         if (actualParameterTypes.size() != expectedParameterTypes.size()) {
             return false;
         }
@@ -39,5 +39,4 @@ public interface MethodParametersPredicate extends Predicate<List<Type>> {
         }
         return result;
     }
-
 }

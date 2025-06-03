@@ -14,9 +14,8 @@
  */
 package com.kindbgen.javarules.matcher;
 
-import org.sonar.plugins.java.api.semantic.Type;
-
 import java.util.function.Predicate;
+import org.sonar.plugins.java.api.semantic.Type;
 
 @FunctionalInterface
 public interface ParameterTypePredicate extends Predicate<Type> {

@@ -14,15 +14,14 @@
  */
 package com.kindbgen.javarules.java.rules;
 
+import static com.kindbgen.javarules.java.Constants.REPOSITORY_KEY;
+import static com.kindbgen.javarules.java.Constants.REPOSITORY_NAME;
+
+import java.util.ArrayList;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonarsource.analyzer.commons.RuleMetadataLoader;
 import org.sonarsource.api.sonarlint.SonarLintSide;
-
-import java.util.ArrayList;
-
-import static com.kindbgen.javarules.java.Constants.REPOSITORY_KEY;
-import static com.kindbgen.javarules.java.Constants.REPOSITORY_NAME;
 
 @SonarLintSide
 public class JavaRulesDefinition implements RulesDefinition {
@@ -37,7 +36,8 @@ public class JavaRulesDefinition implements RulesDefinition {
 
     @Override
     public void define(Context context) {
-        NewRepository repository = context.createRepository(REPOSITORY_KEY, "java").setName(REPOSITORY_NAME);
+        NewRepository repository =
+                context.createRepository(REPOSITORY_KEY, "java").setName(REPOSITORY_NAME);
         RuleMetadataLoader ruleMetadataLoader = new RuleMetadataLoader(RESOURCE_BASE_PATH, runtime);
         ruleMetadataLoader.addRulesByAnnotatedClass(repository, new ArrayList<>(JavaRulesList.getChecks()));
         repository.done();
