@@ -26,6 +26,9 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN }}
+            # 步骤4: 应用Spotless格式化
+             - name: Apply Spotless formatting
+             run: mvn -B spotless:apply
       - name: Run spotless apply
 #        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
         run : mvn -B spotless:apply
@@ -37,20 +40,45 @@ jobs:
 #        if: steps.git-check.outputs.modified == 'true'
 #        with:
 #          commit_message: Spotless Apply
-      - name: Check for changes
-        id: changes
-        run: |
-          if git diff --exit-code; then
-            echo "changes=false" >> $GITHUB_OUTPUT
-          else
-            echo "changes=true" >> $GITHUB_OUTPUT
-          fi
+#      - name: Check for changes
+#        id: check-changes
+#        run: |
+#          git status --porcelain > changes.log
+#          if [ -s changes.log ]; then
+#            echo "changes_detected=true" >> $GITHUB_OUTPUT
+#          else
+#            echo "changes_detected=false" >> $GITHUB_OUTPUT
+#          fi
+#          cat changes.log
+#          rm changes.log
+#
+#      - name: Commit changes
+#        if: steps.changes.outputs.changes == 'true'
+#        run: |
+#          git config user.name 'Kindbgen'
+#          git config user.email 'kindbgen@gmail.com'
+#          git add -u
+#          git commit -m "🤖 Apply Spotless formatting [skip ci]"
+#          git push
 
-      - name: Commit changes
-        if: steps.changes.outputs.changes == 'true'
+      # 步骤3: 检测是否有文件变更
+      - name: Check for changes
+        id: check-changes
         run: |
-          git config user.name 'Kindbgen'
-          git config user.email 'kindbgen@gmail.com'
+          git status --porcelain > changes.log
+          if [ -s changes.log ]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          fi
+          cat changes.log
+          rm changes.log
+      # 步骤4: 提交格式化后的变更
+      - name: Commit changes
+        if: steps.check-changes.outputs.changes_detected == 'true'
+        run: |
+          git config user.name "Kindbgen"
+          git config user.email "kindbgen@gmail.com"
           git add -u
-          git commit -m "🤖 Apply Spotless formatting [skip ci]"
-          git push
+          git commit -m "🤖 Auto-format with Spotless [skip ci]"
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
