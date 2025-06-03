@@ -17,6 +17,7 @@ package com.kindbgen.javarules;
 import com.kindbgen.javarules.java.rules.JavaCheckRegistrar;
 import com.kindbgen.javarules.java.rules.JavaRulesDefinition;
 import org.sonar.api.Plugin;
+import java.util.Iterator;
 
 public class JavaRulesSonarPlugin implements Plugin {
     @Override
