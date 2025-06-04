@@ -69,7 +69,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         if: steps.git-check.outputs.modified == 'true'
         with:
-          commit_message: Spotless Apply
+          commit_message: "Spotless Apply [skip ci]"
+          token: ${{ secrets.TOKEN }}
 #      # 步骤4: 提交格式化后的变更
 #      - name: Commit changes
 #        if: steps.git-check.outputs.modified == 'true'
