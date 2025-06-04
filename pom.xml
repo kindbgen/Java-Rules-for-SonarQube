@@ -296,8 +296,8 @@
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>${spotless.version}</version>
                 <configuration>
-                    <!-- 仅格式化自指定 Git 分支（origin/dev）以来修改过的文件 -->
-                    <ratchetFrom>${spotless.ratchetFrom}</ratchetFrom>
+                    <!-- 仅格式化自指定 Git 分支（origin/master）以来修改过的文件 -->
+                    <!--                    <ratchetFrom>${spotless.ratchetFrom}</ratchetFrom>-->
                     <java>
                         <!-- 使用 Palantir 的 Java 格式化引擎（Google Java Format 的增强版） -->
                         <palantirJavaFormat>
@@ -325,7 +325,8 @@
                             <nrOfIndentSpace>4</nrOfIndentSpace>
                             <keepBlankLines>true</keepBlankLines>
                             <indentBlankLines>false</indentBlankLines>
-                            <indentSchemaLocation>true</indentSchemaLocation>
+                            <!--                            <indentSchemaLocation>true</indentSchemaLocation>-->
+                            <indentAttribute>schemaLocation</indentAttribute>
                             <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
                             <sortModules>false</sortModules>
                             <sortExecutions>false</sortExecutions>
@@ -344,11 +345,11 @@
                 <!-- 可选：绑定到 Maven 生命周期，实现“构建时自动格式化/检查” -->
                 <executions>
                     <execution>
-                        <id>spotless-check</id>
+                        <id>spotless-apply</id>
                         <goals>
-                            <goal>check</goal>
+                            <goal>apply</goal>
                         </goals>
-                        <phase>validate</phase>
+                        <phase>process-sources</phase>
                     </execution>
                 </executions>
             </plugin>
