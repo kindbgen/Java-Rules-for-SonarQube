@@ -63,14 +63,19 @@ jobs:
       - name: Check for modified files
         id: git-check
         run: |
-          echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT      
-
+          echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
       # 步骤4: 提交格式化后的变更
       - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         if: steps.git-check.outputs.modified == 'true'
-        run: |
-          git config user.name "Kindbgen"
-          git config user.email "kindbgen@gmail.com"
-          git add -u
-          git commit -m "🤖 Auto-format with Spotless [skip ci]"
-          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
+        with:
+          commit_message: Spotless Apply
+#      # 步骤4: 提交格式化后的变更
+#      - name: Commit changes
+#        if: steps.git-check.outputs.modified == 'true'
+#        run: |
+#          git config user.name "Kindbgen"
+#          git config user.email "kindbgen@gmail.com"
+#          git add -u
+#          git commit -m "🤖 Auto-format with Spotless [skip ci]"
+#          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
