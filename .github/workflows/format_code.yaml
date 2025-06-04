@@ -16,9 +16,6 @@ jobs:
     if: ${{ github.event_name != 'push' || !contains(github.event.commits[0].message, '[skip ci]') }}
     name: Run Spotless and apply fixes
     runs-on: ubuntu-latest
-#    permissions:
-#      contents: write  # 授予代码写入权限
-#      pull-requests: write  # 允许更新PR
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,52 +27,23 @@ jobs:
       - name: Run spotless apply
 #        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
         run : mvn -B spotless:apply
-#      - name: Check for modified files
-#        id: git-check
-#        run: |
-#          echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-#      - uses: stefanzweifel/git-auto-commit-action@v4
-#        if: steps.git-check.outputs.modified == 'true'
-#        with:
-#          commit_message: Spotless Apply
-#      - name: Check for changes
-#        id: check-changes
-#        run: |
-#          git status --porcelain > changes.log
-#          if [ -s changes.log ]; then
-#            echo "changes_detected=true" >> $GITHUB_OUTPUT
-#          else
-#            echo "changes_detected=false" >> $GITHUB_OUTPUT
-#          fi
-#          cat changes.log
-#          rm changes.log
-#
-#      - name: Commit changes
-#        if: steps.changes.outputs.changes == 'true'
-#        run: |
-#          git config user.name 'kindbgen'
-#          git config user.email 'kindbgen@gmail.com'
-#          git add -u
-#          git commit -m "🤖 Apply Spotless formatting [skip ci]"
-#          git push
-
       # 步骤3: 检测是否有文件变更
       - name: Check for modified files
         id: git-check
         run: |
           echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-      # 步骤4: 提交格式化后的变更
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        if: steps.git-check.outputs.modified == 'true'
-        with:
-          commit_message: "Spotless Apply [skip ci]"
 #      # 步骤4: 提交格式化后的变更
 #      - name: Commit changes
+#        uses: stefanzweifel/git-auto-commit-action@v4
 #        if: steps.git-check.outputs.modified == 'true'
-#        run: |
-#          git config user.name "Kindbgen"
-#          git config user.email "kindbgen@gmail.com"
-#          git add -u
-#          git commit -m "🤖 Auto-format with Spotless [skip ci]"
-#          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
+#        with:
+#          commit_message: "Spotless Apply [skip ci]"
+      # 步骤4: 提交格式化后的变更
+      - name: Commit changes
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config user.name "Kindbgen"
+          git config user.email "kindbgen@gmail.com"
+          git add -u
+          git commit -m "🤖 Auto-format with Spotless [skip ci]"
+          git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
