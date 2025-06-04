@@ -16,9 +16,9 @@ jobs:
     if: ${{ github.event_name != 'push' || !contains(github.event.commits[0].message, '[skip ci]') }}
     name: Run Spotless and apply fixes
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # 授予代码写入权限
-      pull-requests: write  # 允许更新PR
+#    permissions:
+#      contents: write  # 授予代码写入权限
+#      pull-requests: write  # 允许更新PR
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
 #      - name: Commit changes
 #        if: steps.changes.outputs.changes == 'true'
 #        run: |
-#          git config user.name 'Kindbgen'
+#          git config user.name 'kindbgen'
 #          git config user.email 'kindbgen@gmail.com'
 #          git add -u
 #          git commit -m "🤖 Apply Spotless formatting [skip ci]"
@@ -70,7 +70,6 @@ jobs:
         if: steps.git-check.outputs.modified == 'true'
         with:
           commit_message: "Spotless Apply [skip ci]"
-          token: ${{ secrets.TOKEN }}
 #      # 步骤4: 提交格式化后的变更
 #      - name: Commit changes
 #        if: steps.git-check.outputs.modified == 'true'
