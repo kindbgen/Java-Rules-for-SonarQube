@@ -17,28 +17,45 @@ jobs:
     name: Run Spotless and apply fixes
     runs-on: ubuntu-latest
     steps:
+      # 步骤1: 检出代码（正确处理PR分支）
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
           token: ${{ secrets.TOKEN }}
+      # 步骤2: 设置Java环境
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'  # 启用Maven依赖缓存
+
+      # 步骤3: 缓存Maven依赖（加速构建）
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            maven-
       # 步骤4: 应用Spotless格式化
       - name: Run spotless apply
 #        run : ./mvnw -T 4C -B --no-snapshot-updates clean spotless:apply
         run : mvn -B spotless:apply
-      # 步骤3: 检测是否有文件变更
+      # 步骤5: 检测是否有文件变更
       - name: Check for modified files
         id: git-check
         run: |
           echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
-#      # 步骤4: 提交格式化后的变更
+#      # 步骤6: 提交格式化后的变更
 #      - name: Commit changes
 #        uses: stefanzweifel/git-auto-commit-action@v4
 #        if: steps.git-check.outputs.modified == 'true'
 #        with:
 #          commit_message: "Spotless Apply [skip ci]"
-      # 步骤4: 提交格式化后的变更
+      # 步骤6: 提交格式化后的变更
       - name: Commit changes
         if: steps.git-check.outputs.modified == 'true'
         run: |
@@ -47,3 +64,15 @@ jobs:
           git add -u
           git commit -m "🤖 Auto-format with Spotless [skip ci]"
           git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref_name }}
+      # 步骤7: 为PR添加评论（可选）
+      - name: Add PR comment
+        if: ${{ github.event_name == 'pull_request' && steps.git-check.outputs.modified == 'true' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🔧 Spotless 已自动格式化代码并提交到当前分支'
+            })
